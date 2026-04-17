@@ -4,7 +4,8 @@
   interface Todo {
     id: number
     title: string
-    desc: string
+    desc: string,
+    class: string
   }
 
   export default defineComponent({
@@ -16,8 +17,8 @@
         errorDescVisible: false,
         imgVisible: false,
         todos:  [
-          {id: 1, title: 'task', desc: 'desc'},
-          {id: 2, title: 'task', desc: 'desc'}
+          {id: 1, title: 'task', desc: 'desc', class: 'list__item'},
+          {id: 2, title: 'task', desc: 'desc', class: 'list__item'}
         ] as Todo[]
       }
     },
@@ -27,7 +28,8 @@
         const newTask:Todo = {
           id: Date.now(),
           title: this.newTitle,
-          desc: this.newDesc
+          desc: this.newDesc,
+          class: 'list__item'
         }
         this.todos.push(newTask);
         this.newTitle = '';
@@ -84,14 +86,14 @@
       <h2 class="title-2">Мои дела</h2>
       <article class="todo__output-content">
         <ul class="list">
-          <li class="list__item" v-for="(todo, index) in todos" :key="index">
+          <li :class="todo.class" v-for="(todo, index) in todos" :key="index">
             <div class="list__item-content">
               <h3>{{ todo.title }}</h3>
               <p>{{ todo.desc }}</p>
             </div>
             <div class="btn-wrapper">
-              <button class="done-btn btn" >
-                <!-- <img class="done-icon" src="/done.jpg" alt="done"> -->
+              <button @click="todo.class='list__item done'" class="done-btn btn" >
+                <img class="done-icon" src="/done.jpg" alt="done">
               </button>
               <button class="edit-btn btn">
                 <img class="edit-icon" src="/edit.png" alt="edit">
@@ -207,17 +209,24 @@
   .edit{
     &-btn {
       background-color: #fff;
-      border: none;
+      border: 1px solid rgb(97, 97, 76);
+      border-radius: 5px;
+      padding: 1px;
       margin-right: 10px;
+      height: 31px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 33px;
     }
     &-icon {
-      width: 100%;
+      width: 80%;
     }
   }
 
   .delete-btn {
     padding: 3px 10px;
-    background: transparent;
+    background-color: #fff;
     color: red;
     border: 1px solid red;
     border-radius: 5px;
@@ -226,11 +235,20 @@
     margin-right: 5px;
   }
 
-  .done-btn {
-    border: 1px solid green;
-    border-radius: 5px;
-    height: 30px;
-    margin-right: 10px;
+  .done {
+    &-btn {
+      border: 1px solid green;
+      border-radius: 5px;
+      height: 30px;
+      margin-right: 10px;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    &-icon {
+      width: 90%;
+    }
   } 
 
   .error {
@@ -240,6 +258,10 @@
 
   .stub-img {
     width: 100%;
+  }
+
+  .list__item.done {
+    background-color: aquamarine;
   }
 
 </style>
