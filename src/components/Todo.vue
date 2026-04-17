@@ -12,6 +12,9 @@
       return {
         newTitle: '',
         newDesc: '',
+        errorTitleVisible: false,
+        errorDescVisible: false,
+        imgVisible: false,
         todos:  [
           {id: 1, title: 'task', desc: 'desc'},
           {id: 2, title: 'task', desc: 'desc'}
@@ -29,6 +32,34 @@
         this.todos.push(newTask);
         this.newTitle = '';
         this.newDesc = '';
+        this.checkListNull();
+      },
+      validationForm(event: MouseEvent) { 
+        if (this.newDesc == '' && this.newTitle == ''){
+          this.errorDescVisible = true;
+          this.errorTitleVisible = true;
+        } else if (this.newTitle == '') {
+          this.errorTitleVisible = true;
+          this.errorDescVisible = false;
+        } else if (this.newDesc == '') {
+          this.errorDescVisible = true;
+          this.errorTitleVisible = false;
+        } else {
+          this.errorDescVisible = false;
+          this.errorTitleVisible = false;
+          this.addTask(event);
+        }
+      },
+      checkListNull() {
+        if (this.todos.length == 0) {
+          this.imgVisible = true;
+        } else {
+          this.imgVisible = false;
+        }
+      },
+      removeTask(index: any) {
+        this.todos.splice(index, 1);
+        this.checkListNull();
       }
     }
   })
@@ -41,26 +72,34 @@
         <h1 class="title">Что хотите сделать?</h1>
         <form action="#" class="todo__form">
           <label class="todo__label" for="#title-task">Название дела</label>
-          <input id="title-task" v-model="newTitle" type="text" class="todo__input" autocomplete="on" required>
+          <input id="title-task" v-model="newTitle" type="text" class="todo__input">
+          <div v-if="errorTitleVisible" class="error">Введите название дела!</div>
           <label class="todo__label" for="#desk-task">Описание дела</label>
-          <input id="desk-task" v-model="newDesc" type="text" class="todo__input" autocomplete="on" required>
-          <input @click="addTask" class="add-btn btn" type="submit" value="добавить">
+          <input id="desk-task" v-model="newDesc" type="text" class="todo__input">
+          <div v-if="errorDescVisible" class="error">Введите описание дела!</div>
+          <input @click="validationForm" class="add-btn" type="submit" value="добавить">
         </form>
       </div>
     <div class="todo__output">
       <h2 class="title-2">Мои дела</h2>
       <article class="todo__output-content">
         <ul class="list">
-          <li class="list__item" v-for="todo in todos">
-            <h3>{{ todo.title }}</h3>
-            <p>{{ todo.desc }}</p>
-            <!-- <button class="done-btn btn done-click edit-click" >
-              <img src="/done.jpg" alt="done">
-            </button>
-            <button class="edit-btn btn done-click edit-click">
-              <img  src="/edit.png" alt="edit">
-            </button> -->
+          <li class="list__item" v-for="(todo, index) in todos" :key="index">
+            <div class="list__item-content">
+              <h3>{{ todo.title }}</h3>
+              <p>{{ todo.desc }}</p>
+            </div>
+            <div class="btn-wrapper">
+              <button class="done-btn btn" >
+                <!-- <img class="done-icon" src="/done.jpg" alt="done"> -->
+              </button>
+              <button class="edit-btn btn">
+                <img class="edit-icon" src="/edit.png" alt="edit">
+              </button>
+              <button @click="removeTask(index)" class="delete-btn btn">x</button>
+            </div>
           </li>
+          <img v-if="imgVisible" class="stub-img" src="/cat.jpg" alt="cat">
         </ul>
       </article>
     </div>
@@ -69,13 +108,13 @@
 </template>
 
 <style lang="scss" scoped>
-  .wrapper{
+  .wrapper {
     padding-top: 30px;
     display: flex;
     justify-content: center;
   }
 
-  .title{
+  .title {
     width: 100%;
     margin-bottom: 10px;
     font-size: 30px;
@@ -122,22 +161,6 @@
       justify-content: space-between;
       align-items: center;
     }
-    // &-item {
-    //   &__input {
-    //     padding: 5px;
-    //     border-radius: 3px;
-    //     border: none;
-    //     outline: none;
-    //     &-wrapper {
-    //       display: flex;
-    //       border-radius: 5px;
-    //       border-width: 1px;
-    //       border-style: solid;
-    //       border-color: transparent;
-    //       transition: all .3s;
-    //     }
-    //   }
-    // }
     &__label {
       font-size: 22px;
       margin-bottom: 5px;
@@ -153,7 +176,7 @@
     }
   }
 
-  .add-btn{
+  .add-btn {
     background-color: #000;
     color: #fff;
     padding: 10px;
@@ -163,62 +186,60 @@
     cursor: pointer;
   }
 
-  .stub{
-    transition: all .3s;
-    &__title {
-      margin-bottom: 10px;
-    }
-    &-opacity {
-      // opacity: 0;
-    }
-  }
-
-  .list-done__stub-img {
-    width: 100%;
-    border-radius: 10px;
-  }
-
   .list {
     &__item{
       opacity: 1;
       display: flex;
-      flex-direction: column;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 10px;
       padding: 5px;
-      transition: all .5s;
-      position: relative;
       border: 1px solid #000;
       border-radius: 10px;
     }
   }
 
+  .btn-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
   .edit{
-  &-btn{
+    &-btn {
+      background-color: #fff;
+      border: none;
+      margin-right: 10px;
+    }
+    &-icon {
+      width: 100%;
+    }
+  }
+
+  .delete-btn {
+    padding: 3px 10px;
     background: transparent;
-    border: none;
+    color: red;
+    border: 1px solid red;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 700;
+    margin-right: 5px;
+  }
+
+  .done-btn {
+    border: 1px solid green;
+    border-radius: 5px;
+    height: 30px;
     margin-right: 10px;
-  }
-  &-icon{
-    width: 30px;
-  }
-}
+  } 
 
-.delete-btn{
-  padding: 3px 10px;
-  background: transparent;
-  color: red;
-  border: 1px solid red;
-  border-radius: 5px;
-  font-size: 20px;
-  font-weight: 700;
-  margin-right: 5px;
-}
+  .error {
+    color: red;
+    margin-bottom: 5px;
+  }
 
-.done-btn{
-  height: 30px;
-  border: none;
-  margin-right: 10px;
-} 
+  .stub-img {
+    width: 100%;
+  }
 
 </style>
