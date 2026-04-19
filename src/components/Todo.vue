@@ -5,7 +5,8 @@
     id: number
     title: string
     desc: string,
-    class: string
+    class: string,
+    isEdit: any
   }
 
   export default defineComponent({
@@ -17,8 +18,8 @@
         errorDescVisible: false,
         imgVisible: false,
         todos:  [
-          {id: 1, title: 'task', desc: 'desc', class: 'list__item'},
-          {id: 2, title: 'task', desc: 'desc', class: 'list__item'}
+          {id: 1, title: 'task 1', desc: 'desc 1', class: 'list__item', isEdit: false},
+          {id: 2, title: 'task 2', desc: 'desc 2', class: 'list__item', isEdit: false}
         ] as Todo[]
       }
     },
@@ -29,7 +30,8 @@
           id: Date.now(),
           title: this.newTitle,
           desc: this.newDesc,
-          class: 'list__item'
+          class: 'list__item',
+          isEdit: false
         }
         this.todos.push(newTask);
         this.newTitle = '';
@@ -62,6 +64,12 @@
       removeTask(index: any) {
         this.todos.splice(index, 1);
         this.checkListNull();
+      },
+      editTask(index: any) {
+        this.todos[index].isEdit = true;
+      },
+      editSubmitTask(index: any) {
+        this.todos[index].isEdit = false;
       }
     }
   })
@@ -90,12 +98,17 @@
             <div class="list__item-content">
               <h3>{{ todo.title }}</h3>
               <p>{{ todo.desc }}</p>
+              <div v-if="todo.isEdit" class="inputs-wrapper">
+                <input v-model="todo.title" type="text" placeholder="отредактируйте заголовок">
+                <input v-model="todo.desc" type="text" placeholder="отредактируйте описание">
+                <button @click="editSubmitTask(index)">ок</button>
+              </div>
             </div>
             <div class="btn-wrapper">
               <button @click="todo.class='list__item done'" class="done-btn btn" >
                 <img class="done-icon" src="/done.jpg" alt="done">
               </button>
-              <button class="edit-btn btn">
+              <button @click="editTask(index)" class="edit-btn btn">
                 <img class="edit-icon" src="/edit.png" alt="edit">
               </button>
               <button @click="removeTask(index)" class="delete-btn btn">x</button>
