@@ -6,10 +6,11 @@
     title: string
     desc: string,
     class: string,
-    isEdit: any
+    isEdit: any,
+    done: any
   }
 
-  export default defineComponent({
+  export default defineComponent({   
     data() {
       return {
         newTitle: '',
@@ -17,10 +18,7 @@
         errorTitleVisible: false,
         errorDescVisible: false,
         imgVisible: false,
-        todos:  [
-          {id: 1, title: 'task 1', desc: 'desc 1', class: 'list__item', isEdit: false},
-          {id: 2, title: 'task 2', desc: 'desc 2', class: 'list__item', isEdit: false}
-        ] as Todo[]
+        todos: [] as Todo[]
       }
     },
     methods: {
@@ -31,7 +29,8 @@
           title: this.newTitle,
           desc: this.newDesc,
           class: 'list__item',
-          isEdit: false
+          isEdit: false,
+          done: false
         }
         this.todos.push(newTask);
         this.newTitle = '';
@@ -70,6 +69,10 @@
       },
       editSubmitTask(index: any) {
         this.todos[index].isEdit = false;
+      },
+      doneTask(index: any) {
+        this.todos[index].done = true;
+        this.todos[index].class = 'list__item done'
       }
     }
   })
@@ -82,7 +85,7 @@
         <h1 class="title">Что хотите сделать?</h1>
         <form action="#" class="todo__form">
           <label class="todo__label" for="#title-task">Название дела</label>
-          <input id="title-task" v-model="newTitle" type="text" class="todo__input">
+          <input id="title-task" v-model="newTitle" type="text" class="todo__input" autofocus="true">
           <div v-if="errorTitleVisible" class="error">Введите название дела!</div>
           <label class="todo__label" for="#desk-task">Описание дела</label>
           <input id="desk-task" v-model="newDesc" type="text" class="todo__input">
@@ -96,16 +99,16 @@
         <ul class="list">
           <li :class="todo.class" v-for="(todo, index) in todos" :key="index">
             <div class="list__item-content">
-              <h3>{{ todo.title }}</h3>
-              <p>{{ todo.desc }}</p>
+              <h3 v-if="!todo.isEdit">{{ todo.title }}</h3>
+              <p v-if="!todo.isEdit">{{ todo.desc }}</p>
               <div v-if="todo.isEdit" class="inputs-wrapper">
-                <input v-model="todo.title" type="text" placeholder="отредактируйте заголовок">
-                <input v-model="todo.desc" type="text" placeholder="отредактируйте описание">
-                <button @click="editSubmitTask(index)">ок</button>
+                <input class="todo__input" v-model="todo.title" type="text" placeholder="отредактируйте заголовок">
+                <input class="todo__input" v-model="todo.desc" type="text" placeholder="отредактируйте описание">
+                <button @click="editSubmitTask(index)" class="add-btn">ок</button>
               </div>
             </div>
-            <div class="btn-wrapper">
-              <button @click="todo.class='list__item done'" class="done-btn btn" >
+            <div v-if="!todo.isEdit" class="btn-wrapper">
+              <button @click="doneTask(index)" class="done-btn btn" >
                 <img class="done-icon" src="/done.jpg" alt="done">
               </button>
               <button @click="editTask(index)" class="edit-btn btn">
@@ -114,9 +117,26 @@
               <button @click="removeTask(index)" class="delete-btn btn">x</button>
             </div>
           </li>
-          <img v-if="imgVisible" class="stub-img" src="/cat.jpg" alt="cat">
         </ul>
+        <img v-if="imgVisible || todos.length == 0" class="stub-img" src="/cat.jpg" alt="cat">
       </article>
+
+
+      <!-- DEBUG!!!! -->
+
+      <div class="done__tasks">
+        <h2 class="title-2">выполненные дела</h2>
+        <p v-if="todos.length == 0">выполненных дел нет:(</p>
+        <template v-else v-for="todo in todos">
+          <p v-if="!todo.done">выполненных дел нет:(</p>
+          <ul class="list" v-for="(todo, index) in todos" :key="index">
+            <li class="list__item" v-if="todo.done">
+              <p> {{ todo.title }}</p>
+              <p> {{ todo.desc }}</p>  
+            </li>
+          </ul>
+        </template>
+      </div>
     </div>
   </div>
   </div>
@@ -138,10 +158,9 @@
   }
 
   .todo {
-    width: 40%;
+    width: 70%;
     min-height: 500px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     &__header {
@@ -164,7 +183,6 @@
         border: 1px solid #000;
         padding: 10px;
         border-radius: 10px;
-        height: 100%;
         width: 100%;
         transition: .3s;
       }
@@ -277,4 +295,12 @@
     background-color: aquamarine;
   }
 
+  .inputs-wrapper {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    & > .todo__input {
+      margin-bottom: 0;
+    }
+  }
 </style>
