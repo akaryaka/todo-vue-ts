@@ -18,6 +18,7 @@
         errorTitleVisible: false,
         errorDescVisible: false,
         imgVisible: false,
+        stubVisible: false,
         todos: [] as Todo[]
       }
     },
@@ -36,6 +37,7 @@
         this.newTitle = '';
         this.newDesc = '';
         this.checkListNull();
+        this.checkListDoneNull();
       },
       validationForm(event: MouseEvent) { 
         if (this.newDesc == '' && this.newTitle == ''){
@@ -53,16 +55,32 @@
           this.addTask(event);
         }
       },
+      checkListDoneNull() {
+        if (this.todos.length == 0) {
+          this.stubVisible = true;
+        }
+        for (let i=0; i<this.todos.length; i++) {
+          if (this.todos[i].class == 'list__item done') {
+            this.stubVisible = false;
+            break;
+          } else {
+            this.stubVisible = true;
+          }
+        }
+      },
       checkListNull() {
         if (this.todos.length == 0) {
           this.imgVisible = true;
+          this.stubVisible = true;
         } else {
           this.imgVisible = false;
+          this.stubVisible = false;
         }
       },
       removeTask(index: any) {
         this.todos.splice(index, 1);
         this.checkListNull();
+        this.checkListDoneNull();
       },
       editTask(index: any) {
         this.todos[index].isEdit = true;
@@ -72,8 +90,12 @@
       },
       doneTask(index: any) {
         this.todos[index].done = true;
-        this.todos[index].class = 'list__item done'
+        this.todos[index].class = 'list__item done';
+        this.stubVisible = false;
       }
+    },
+    mounted() {
+      this.checkListDoneNull();
     }
   })
 </script>
@@ -121,21 +143,15 @@
         <img v-if="imgVisible || todos.length == 0" class="stub-img" src="/cat.jpg" alt="cat">
       </article>
 
-
-      <!-- DEBUG!!!! -->
-
       <div class="done__tasks">
         <h2 class="title-2">выполненные дела</h2>
-        <p v-if="todos.length == 0">выполненных дел нет:(</p>
-        <template v-else v-for="todo in todos">
-          <p v-if="!todo.done">выполненных дел нет:(</p>
-          <ul class="list" v-for="(todo, index) in todos" :key="index">
-            <li class="list__item" v-if="todo.done">
-              <p> {{ todo.title }}</p>
-              <p> {{ todo.desc }}</p>  
-            </li>
-          </ul>
-        </template>
+        <ul class="list" v-for="(todo, index) in todos" :key="index">
+          <li class="list__item" v-if="todo.done">
+            <p> {{ todo.title }}</p>
+            <p> {{ todo.desc }}</p>  
+          </li>
+        </ul>
+        <p v-show="todos.length == 0 || stubVisible">нет выполненных дел(</p>
       </div>
     </div>
   </div>
