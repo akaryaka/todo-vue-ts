@@ -109,7 +109,7 @@
     <div class="todo" id="todo">
       <div class="todo__header">
         <h1 class="title">Что хотите сделать?</h1>
-        <TodoForm @click="validationForm"/>
+        <TodoForm @click="validationForm" v-if="errorTitleVisible"/>
       </div>
     <div class="todo__output">
       <h2 class="title-2">Мои дела</h2>

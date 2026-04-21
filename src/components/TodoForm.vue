@@ -1,22 +1,25 @@
 <template>
   <form action="#" class="todo__form">
     <label class="todo__label" for="#title-task">Название дела</label>
-    <input id="title-task" v-model="newTitle" type="text" class="todo__input" autofocus="true">
-    <div v-if="errorTitleVisible" class="error">Введите название дела!</div>
+    <!-- <input id="title-task" v-model="newTitle" type="text" class="todo__input" autofocus="true"> -->
+    <!-- <div v-if="visible" class="error">Введите название дела!</div> -->
+    <!-- <div v-if="errorTitleVisible" class="error">Введите название дела!</div> -->
     <label class="todo__label" for="#desk-task">Описание дела</label>
-    <input id="desk-task" v-model="newDesc" type="text" class="todo__input">
-    <div v-if="errorDescVisible" class="error">Введите описание дела!</div>
+    <!-- <input id="desk-task" v-model="newDesc" type="text" class="todo__input"> -->
+    <!-- <div v-if="errorDescVisible" class="error">Введите описание дела!</div> -->
     <input @click="handle" class="add-btn" type="submit" value="добавить">
     <!-- <input @click="validationForm" class="add-btn" type="submit" value="добавить"> -->
   </form>
 </template>
 
 <script>
+
+  const emit = defineEmits;
   export default {
-    emits: ['click'],
+    // emits: ['click', 'v-if'],
     methods: {
       handle() {
-        this.$emit('click')
+        this.$emit('click');
       }
     }
   }
