@@ -1,107 +1,124 @@
 <script lang="ts">
-  import { defineComponent } from 'vue';
-  import TodoForm from './TodoForm.vue';
+  import { ref } from 'vue';
 
   interface Todo {
-    id: number
-    title: string
-    desc: string,
+    id: number,
+    title: string | undefined,
+    desc: string | undefined,
     class: string,
-    isEdit: any,
-    done: any
+    isEdit: boolean,
+    done: boolean
   }
 
-  export default defineComponent({   
-    components: {
-      TodoForm
-    },
-    data() {
-      return {
+  interface Form {
+    newTitle : string,
+    newDesc: string
+  }
+
+  interface Errors {
+    errorTitleVisible: boolean,
+    errorDescVisible: boolean
+  }
+
+  export default {   
+    setup() {
+      // Form
+      const form = ref<Form>({
         newTitle: '',
-        newDesc: '',
+        newDesc: ''
+      })
+      const errors = ref<Errors>({
         errorTitleVisible: false,
-        errorDescVisible: false,
+        errorDescVisible: false
+      })
+      const stubs = ref({
         imgVisible: false,
-        stubVisible: false,
-        todos: [] as Todo[]
-      }
-    },
-    methods: {
-      addTask(event: MouseEvent) {
-        event.preventDefault;
+        stubVisible: false
+      })
+
+      const todos = ref<Todo[]>([]);
+
+      function addTask(event: MouseEvent) {
+        event.preventDefault();
         const newTask:Todo = {
           id: Date.now(),
-          title: this.newTitle,
-          desc: this.newDesc,
+          title: form.value.newTitle,
+          desc: form.value.newDesc,
           class: 'list__item',
           isEdit: false,
           done: false
         }
-        this.todos.push(newTask);
-        this.newTitle = '';
-        this.newDesc = '';
-        this.checkListNull();
-        this.checkListDoneNull();
-      },
-      validationForm(event: MouseEvent) { 
-        if (this.newDesc == '' && this.newTitle == ''){
-          this.errorDescVisible = true;
-          this.errorTitleVisible = true;
-        } else if (this.newTitle == '') {
-          this.errorTitleVisible = true;
-          this.errorDescVisible = false;
-        } else if (this.newDesc == '') {
-          this.errorDescVisible = true;
-          this.errorTitleVisible = false;
+        todos.value.push(newTask);
+        form.value.newTitle = '';
+        form.value.newDesc = '';
+      }
+
+      function validationForm(event: MouseEvent) {
+         if (form.value.newDesc == '' && form.value.newTitle == ''){
+          errors.value.errorDescVisible = true;
+          errors.value.errorTitleVisible = true;
+        } else if (form.value.newTitle == '') {
+          errors.value.errorTitleVisible = true;
+          errors.value.errorDescVisible = false;
+        } else if (form.value.newDesc == '') {
+          errors.value.errorDescVisible = true;
+          errors.value.errorTitleVisible = false;
         } else {
-          this.errorDescVisible = false;
-          this.errorTitleVisible = false;
-          this.addTask(event);
+          errors.value.errorDescVisible = false;
+          errors.value.errorTitleVisible = false;
+          addTask(event)
+          checkListNull();
+          checkListDoneNull();
         }
-      },
-      checkListDoneNull() {
-        if (this.todos.length == 0) {
-          this.stubVisible = true;
+      }
+
+      function doneTask(index: any) {
+        todos.value[index].done = true;
+        todos.value[index].class = 'list__item done';
+        stubs.value.stubVisible = false;
+      }
+
+      function editTask(index: any) {
+        todos.value[index].isEdit = true;
+      }
+
+      function editSubmitTask(index: any) {
+        todos.value[index].isEdit = false;
+      }
+
+      function removeTask(index: any) {
+        todos.value.splice(index, 1);
+        checkListNull();
+        checkListDoneNull();
+      }
+
+      function checkListNull() {
+        if (todos.value.length == 0) {
+          stubs.value.imgVisible = true;
+          stubs.value.stubVisible = true;
+        } else {
+          stubs.value.imgVisible = false;
+          stubs.value.stubVisible = false;
         }
-        for (let i=0; i<this.todos.length; i++) {
-          if (this.todos[i].class == 'list__item done') {
-            this.stubVisible = false;
-            break;
+      }
+
+      function checkListDoneNull() {
+        if (todos.value.length == 0) {
+          stubs.value.stubVisible = true;
+          return;
+        }
+        for (let i=0; i<todos.value.length; i++) {
+          if (todos.value[i].class == 'list__item done') {
+            stubs.value.stubVisible = false;
           } else {
-            this.stubVisible = true;
+            stubs.value.stubVisible = true;
           }
         }
-      },
-      checkListNull() {
-        if (this.todos.length == 0) {
-          this.imgVisible = true;
-          this.stubVisible = true;
-        } else {
-          this.imgVisible = false;
-          this.stubVisible = false;
-        }
-      },
-      removeTask(index: any) {
-        this.todos.splice(index, 1);
-        this.checkListNull();
-        this.checkListDoneNull();
-      },
-      editTask(index: any) {
-        this.todos[index].isEdit = true;
-      },
-      editSubmitTask(index: any) {
-        this.todos[index].isEdit = false;
-      },
-      doneTask(index: any) {
-        this.todos[index].done = true;
-        this.todos[index].class = 'list__item done';
-        this.stubVisible = false;
       }
-    },
-    mounted() {
-      this.checkListDoneNull();
+
+      return { addTask, validationForm, doneTask, editTask, removeTask, editSubmitTask, checkListNull, checkListDoneNull, form, todos, errors, stubs }
     }
-  })
+  }
 </script>
 
 <template>
@@ -109,13 +126,21 @@
     <div class="todo" id="todo">
       <div class="todo__header">
         <h1 class="title">Что хотите сделать?</h1>
-        <TodoForm @click="validationForm" v-if="errorTitleVisible"/>
+        <form action="#" class="todo__form">
+          <label class="todo__label" for="title-task">Название дела</label>
+          <input id="title-task" type="text" v-model="form.newTitle" class="todo__input" autofocus="true">
+          <div v-if="errors.errorTitleVisible" class="error">Введите название дела!</div>
+          <label class="todo__label" for="desk-task">Описание дела</label>
+          <input id="desk-task" v-model="form.newDesc" type="text" class="todo__input">
+          <div v-if="errors.errorDescVisible" class="error">Введите описание дела!</div>
+          <input @click="validationForm" class="add-btn" type="submit" value="добавить">
+        </form>
       </div>
     <div class="todo__output">
       <h2 class="title-2">Мои дела</h2>
       <article class="todo__output-content">
         <ul class="list">
-          <li :class="todo.class" v-for="(todo, index) in todos" :key="index">
+          <li :class="todo.class" v-for="(todo, index) in todos" :key="todo.id">
             <div class="list__item-content">
               <h3 v-if="!todo.isEdit">{{ todo.title }}</h3>
               <p v-if="!todo.isEdit">{{ todo.desc }}</p>
@@ -136,19 +161,19 @@
             </div>
           </li>
         </ul>
-        <img v-if="imgVisible || todos.length == 0" class="stub-img" src="/cat.jpg" alt="cat">
+        <img v-if="stubs.imgVisible || todos.length == 0" class="stub-img" src="/cat.jpg" alt="cat">
       </article>
 
       <div class="done__tasks">
         <h2 class="title-2">выполненные дела</h2>
-        <ul class="list" v-for="(todo, index) in todos" :key="index">
-          <li class="list__item" v-if="todo.done">
+        <ul class="list">
+          <li  v-for="todo in todos.filter(t => t.done)"  class="list__item"  :key="todo.id">
             <p> {{ todo.title }}</p>
             <p> {{ todo.desc }}</p>  
           </li>
         </ul>
-        <p v-show="todos.length == 0 || stubVisible">нет выполненных дел(</p>
-      </div>
+        <p v-show="todos.length == 0 || stubs.stubVisible">нет выполненных дел(</p>
+      </div> 
     </div>
   </div>
   </div>
@@ -201,6 +226,43 @@
     }
   }
 
+    .todo {
+    &__form {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    }
+    &__label {
+      font-size: 22px;
+      margin-bottom: 5px;
+    }
+    &__input {
+      padding: 5px;
+      outline: none;
+      border: 1px solid #000;
+      font-size: 25px;
+      width: 90%;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+  }
+
+  .error {
+    color: red;
+    margin-bottom: 5px;
+  }
+
+  .add-btn {
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 25px;
+    cursor: pointer;
+  }
   .list {
     &__item{
       opacity: 1;
