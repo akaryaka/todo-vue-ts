@@ -1,5 +1,6 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
+  import TodoForm from './TodoForm.vue';
 
   interface Todo {
     id: number
@@ -11,6 +12,9 @@
   }
 
   export default defineComponent({   
+    components: {
+      TodoForm
+    },
     data() {
       return {
         newTitle: '',
@@ -24,7 +28,7 @@
     },
     methods: {
       addTask(event: MouseEvent) {
-        event.preventDefault();
+        event.preventDefault;
         const newTask:Todo = {
           id: Date.now(),
           title: this.newTitle,
@@ -105,15 +109,7 @@
     <div class="todo" id="todo">
       <div class="todo__header">
         <h1 class="title">Что хотите сделать?</h1>
-        <form action="#" class="todo__form">
-          <label class="todo__label" for="#title-task">Название дела</label>
-          <input id="title-task" v-model="newTitle" type="text" class="todo__input" autofocus="true">
-          <div v-if="errorTitleVisible" class="error">Введите название дела!</div>
-          <label class="todo__label" for="#desk-task">Описание дела</label>
-          <input id="desk-task" v-model="newDesc" type="text" class="todo__input">
-          <div v-if="errorDescVisible" class="error">Введите описание дела!</div>
-          <input @click="validationForm" class="add-btn" type="submit" value="добавить">
-        </form>
+        <TodoForm @click="validationForm"/>
       </div>
     <div class="todo__output">
       <h2 class="title-2">Мои дела</h2>
@@ -203,36 +199,6 @@
         transition: .3s;
       }
     }
-    &__form {
-      width: 60%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-    }
-    &__label {
-      font-size: 22px;
-      margin-bottom: 5px;
-    }
-    &__input {
-      padding: 5px;
-      outline: none;
-      border: 1px solid #000;
-      font-size: 25px;
-      width: 90%;
-      margin-bottom: 10px;
-      border-radius: 5px;
-    }
-  }
-
-  .add-btn {
-    background-color: #000;
-    color: #fff;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 25px;
-    cursor: pointer;
   }
 
   .list {
@@ -297,11 +263,6 @@
       width: 90%;
     }
   } 
-
-  .error {
-    color: red;
-    margin-bottom: 5px;
-  }
 
   .stub-img {
     width: 100%;
