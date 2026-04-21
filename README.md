@@ -1,3 +1,3 @@
-Options API
+Composition API
 
-- legacy
+- vue 3
