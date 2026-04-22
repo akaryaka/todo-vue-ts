@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" setup>
   import { ref } from 'vue';
   import TodoList from './TodoList/TodoList.vue';
 
@@ -21,90 +21,85 @@
     errorDescVisible: boolean
   }
 
-  export default {   
-    setup() {
-      // Form
-      const form = ref<Form>({
-        newTitle: '',
-        newDesc: ''
-      })
-      const errors = ref<Errors>({
-        errorTitleVisible: false,
-        errorDescVisible: false
-      })
-      const stubs = ref({
-        imgVisible: false,
-        stubVisible: false
-      })
+  // Form
+  const form = ref<Form>({
+    newTitle: '',
+    newDesc: ''
+  })
+  const errors = ref<Errors>({
+    errorTitleVisible: false,
+    errorDescVisible: false
+  })
+  const stubs = ref({
+    imgVisible: false,
+    stubVisible: false
+  })
 
-      const todos: any = ref<any>([]);
+  const todos: any = ref<any>([]);
 
-      function addTask(event: MouseEvent) {
-        event.preventDefault();
-        const newTask:Todo = {
-          id: Date.now(),
-          title: form.value.newTitle,
-          desc: form.value.newDesc,
-          class: 'list__item',
-          isEdit: false,
-          done: false
-        }
-        todos.value.push(newTask);
-        form.value.newTitle = '';
-        form.value.newDesc = '';
-      }
+  function addTask(event: MouseEvent) {
+    event.preventDefault();
+    const newTask:Todo = {
+      id: Date.now(),
+      title: form.value.newTitle,
+      desc: form.value.newDesc,
+      class: 'list__item',
+      isEdit: false,
+      done: false
+    }
+    todos.value.push(newTask);
+    form.value.newTitle = '';
+    form.value.newDesc = '';
+  }
 
-      function validationForm(event: MouseEvent) {
-         if (form.value.newDesc == '' && form.value.newTitle == ''){
-          errors.value.errorDescVisible = true;
-          errors.value.errorTitleVisible = true;
-        } else if (form.value.newTitle == '') {
-          errors.value.errorTitleVisible = true;
-          errors.value.errorDescVisible = false;
-        } else if (form.value.newDesc == '') {
-          errors.value.errorDescVisible = true;
-          errors.value.errorTitleVisible = false;
-        } else {
-          errors.value.errorDescVisible = false;
-          errors.value.errorTitleVisible = false;
-          addTask(event);
-        }
-        checkListNull();
-      }
+  function validationForm(event: MouseEvent) {
+      if (form.value.newDesc == '' && form.value.newTitle == ''){
+      errors.value.errorDescVisible = true;
+      errors.value.errorTitleVisible = true;
+    } else if (form.value.newTitle == '') {
+      errors.value.errorTitleVisible = true;
+      errors.value.errorDescVisible = false;
+    } else if (form.value.newDesc == '') {
+      errors.value.errorDescVisible = true;
+      errors.value.errorTitleVisible = false;
+    } else {
+      errors.value.errorDescVisible = false;
+      errors.value.errorTitleVisible = false;
+      addTask(event);
+    }
+    checkListNull();
+  }
 
-      function doneTask(index: any) {
-        todos.value[index].done = true;
-        todos.value[index].class = 'list__item done';
-        stubs.value.stubVisible = false;
-      }
+  function doneTask(index: any) {
+    todos.value[index].done = true;
+    todos.value[index].class = 'list__item done';
+    stubs.value.stubVisible = false;
+  }
 
-      function editTask(index: any) {
-        todos.value[index].isEdit = true;
-      }
+  function editTask(index: any) {
+    todos.value[index].isEdit = true;
+  }
 
-      function editSubmitTask(index: any) {
-        todos.value[index].isEdit = false;
-      }
+  function editSubmitTask(index: any) {
+    todos.value[index].isEdit = false;
+  }
 
-      function removeTask(index: any) {
-        todos.value.splice(index, 1);
-        checkListNull();
-      }
+  function removeTask(index: any) {
+    todos.value.splice(index, 1);
+    checkListNull();
+  }
 
-      function checkListNull() {
-        if (todos.value.length == 0) {
-          stubs.value.imgVisible = true;
-          stubs.value.stubVisible = true;
-          stubs.value.stubVisible = true;
-        } else {
-          stubs.value.imgVisible = false;
-          stubs.value.stubVisible = false;
-        }
-      }
-
-      return { addTask, validationForm, doneTask, editTask, removeTask, editSubmitTask, checkListNull, form, todos, errors, stubs }
+  function checkListNull() {
+    if (todos.value.length == 0) {
+      stubs.value.imgVisible = true;
+      stubs.value.stubVisible = true;
+      stubs.value.stubVisible = true;
+    } else {
+      stubs.value.imgVisible = false;
+      stubs.value.stubVisible = false;
     }
   }
+
 </script>
 
 <template>
@@ -112,7 +107,7 @@
     <div class="todo" id="todo">
       <div class="todo__header">
         <h1 class="title">Что хотите сделать?</h1>
-         <TodoList />
+        <TodoList />
         <form action="#" class="todo__form">
           <label class="todo__label" for="title-task">Название дела</label>
           <input id="title-task" type="text" v-model="form.newTitle" class="todo__input" autofocus="true">

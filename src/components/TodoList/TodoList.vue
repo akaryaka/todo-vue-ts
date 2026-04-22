@@ -1,22 +1,19 @@
 <template>
-    <p>title</p>
-    <!-- <ul class="list"> -->
-
-        <!-- <li>{{ title }}</li> -->
-    <!-- </ul> -->
+  <p>{{ title }}</p>
 </template>
 
-<script>
-    // defineProps(['title']);
-    // export default {
-
-    // }
+<script setup>
+defineProps({
+  title: {
+    type: String,
+    default: 'Заголовок'
+  }
+})
 </script>
 
-<style>
+<style scoped>
     p {
-        position: absolute;
-        left: 0;
-        top: 0;
+    padding: 10px;
+    background: #f0f0f0;
     }
 </style>
