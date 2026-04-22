@@ -24,6 +24,8 @@ src
 - - validation.ts
 - types/
 - - todos.ts
+- constants/
+- - index.ts
 - App.vue
 
 ---

@@ -1,23 +1,9 @@
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  // import { ref } from 'vue';
   import TodoList from './TodoList/TodoList.vue';
   import type { Todo, Form, Errors } from '../types/todo.ts';
-
-  // Form
-  const form = ref<Form>({
-    newTitle: '',
-    newDesc: ''
-  })
-  const errors = ref<Errors>({
-    errorTitleVisible: false,
-    errorDescVisible: false
-  })
-  const stubs = ref({
-    imgVisible: false,
-    stubVisible: false
-  })
-
-  const todos: any = ref<any>([]);
+  import Input from './ui/Input.vue';
+  import { form, errors, stubs, todos } from '../constants/index.ts';
 
   function addTask(event: MouseEvent) {
     event.preventDefault();
@@ -92,9 +78,11 @@
         <TodoList desc="2"/>
         <form action="#" class="todo__form">
           <label class="todo__label" for="title-task">Название дела</label>
+          <!-- <Input placeholder="hello"/> -->
           <input id="title-task" type="text" v-model="form.newTitle" class="todo__input" autofocus="true">
           <div v-if="errors.errorTitleVisible" class="error">Введите название дела!</div>
           <label class="todo__label" for="desk-task">Описание дела</label>
+          <!-- <Input placeholder="hello"/> -->
           <input id="desk-task" v-model="form.newDesc" type="text" class="todo__input">
           <div v-if="errors.errorDescVisible" class="error">Введите описание дела!</div>
           <input @click="validationForm" class="add-btn" type="submit" value="добавить">
@@ -203,15 +191,6 @@
     &__label {
       font-size: 22px;
       margin-bottom: 5px;
-    }
-    &__input {
-      padding: 5px;
-      outline: none;
-      border: 1px solid #000;
-      font-size: 25px;
-      width: 90%;
-      margin-bottom: 10px;
-      border-radius: 5px;
     }
   }
 
