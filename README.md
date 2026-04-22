@@ -6,24 +6,25 @@ Composition API
 
 Структура проекта
 
-src/
-|-- components/
-|---|--todo/
-|---|--|--TodoForm.vue
-|---|--|--TodoList.vue
-|---|--|--TodoItem.vue
-|---|--|--CompletedList.vue
-|---|--|--EmptyState.vue
-|---|--ui/
-|---|--|--Input.vue
-|---|--|--Button.vue
-|---|--|--Error.vue
-|---composables/
-|---|--todos.ts
-|---|--validation.ts
-|---types/
-|---|--todos.ts
-|---App.vue
+src
+
+- components/
+- - todo/
+- - - TodoForm.vue
+- - - TodoList.vue
+- - - TodoItem.vue
+- - - CompletedList.vue
+- - - EmptyState.vue
+- - ui/
+- - - Input.vue
+- - - Button.vue
+- - - Error.vue
+- composables/
+- - todos.ts
+- - validation.ts
+- types/
+- - todos.ts
+- App.vue
 
 - TodoForm.vue - форма добавления задачи
 - TodoList.vue - контейнер списка задач
