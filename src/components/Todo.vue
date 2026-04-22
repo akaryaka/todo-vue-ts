@@ -69,7 +69,6 @@
           addTask(event);
         }
         checkListNull();
-        checkListDoneNull();
       }
 
       function doneTask(index: any) {
@@ -89,12 +88,12 @@
       function removeTask(index: any) {
         todos.value.splice(index, 1);
         checkListNull();
-        checkListDoneNull();
       }
 
       function checkListNull() {
         if (todos.value.length == 0) {
           stubs.value.imgVisible = true;
+          stubs.value.stubVisible = true;
           stubs.value.stubVisible = true;
         } else {
           stubs.value.imgVisible = false;
@@ -102,14 +101,7 @@
         }
       }
 
-      function checkListDoneNull() {
-        if (todos.value.length == 0) {
-          stubs.value.stubVisible = true;
-          return;
-        } 
-      }
-
-      return { addTask, validationForm, doneTask, editTask, removeTask, editSubmitTask, checkListNull, checkListDoneNull, form, todos, errors, stubs }
+      return { addTask, validationForm, doneTask, editTask, removeTask, editSubmitTask, checkListNull, form, todos, errors, stubs }
     }
   }
 </script>
@@ -255,6 +247,9 @@
     border-radius: 5px;
     font-size: 25px;
     cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
   }
 
   .list {
