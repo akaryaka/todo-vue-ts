@@ -1,5 +1,6 @@
 <script lang="ts">
   import { ref } from 'vue';
+  import TodoList from './TodoList/TodoList.vue';
 
   interface Todo {
     id: number,
@@ -111,6 +112,7 @@
     <div class="todo" id="todo">
       <div class="todo__header">
         <h1 class="title">Что хотите сделать?</h1>
+         <TodoList />
         <form action="#" class="todo__form">
           <label class="todo__label" for="title-task">Название дела</label>
           <input id="title-task" type="text" v-model="form.newTitle" class="todo__input" autofocus="true">
@@ -161,7 +163,9 @@
       </div> 
     </div>
   </div>
+ 
   </div>
+  
 </template>
 
 <style lang="scss" scoped>
