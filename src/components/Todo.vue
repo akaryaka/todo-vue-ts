@@ -1,73 +1,8 @@
 <script lang="ts" setup>
-  // import { ref } from 'vue';
   import TodoList from './TodoList/TodoList.vue';
-  import type { Todo, Form, Errors } from '../types/todo.ts';
-  import Input from './ui/Input.vue';
   import { form, errors, stubs, todos } from '../constants/index.ts';
-
-  function addTask(event: MouseEvent) {
-    event.preventDefault();
-    const newTask:Todo = {
-      id: Date.now(),
-      title: form.value.newTitle,
-      desc: form.value.newDesc,
-      class: 'list__item',
-      isEdit: false,
-      done: false
-    }
-    todos.value.push(newTask);
-    form.value.newTitle = '';
-    form.value.newDesc = '';
-  }
-
-  function validationForm(event: MouseEvent) {
-      if (form.value.newDesc == '' && form.value.newTitle == ''){
-      errors.value.errorDescVisible = true;
-      errors.value.errorTitleVisible = true;
-    } else if (form.value.newTitle == '') {
-      errors.value.errorTitleVisible = true;
-      errors.value.errorDescVisible = false;
-    } else if (form.value.newDesc == '') {
-      errors.value.errorDescVisible = true;
-      errors.value.errorTitleVisible = false;
-    } else {
-      errors.value.errorDescVisible = false;
-      errors.value.errorTitleVisible = false;
-      addTask(event);
-    }
-    checkListNull();
-  }
-
-  function doneTask(index: any) {
-    todos.value[index].done = true;
-    todos.value[index].class = 'list__item done';
-    stubs.value.stubVisible = false;
-  }
-
-  function editTask(index: any) {
-    todos.value[index].isEdit = true;
-  }
-
-  function editSubmitTask(index: any) {
-    todos.value[index].isEdit = false;
-  }
-
-  function removeTask(index: any) {
-    todos.value.splice(index, 1);
-    checkListNull();
-  }
-
-  function checkListNull() {
-    if (todos.value.length == 0) {
-      stubs.value.imgVisible = true;
-      stubs.value.stubVisible = true;
-      stubs.value.stubVisible = true;
-    } else {
-      stubs.value.imgVisible = false;
-      stubs.value.stubVisible = false;
-    }
-  }
-
+  import { validationForm } from '../composables/validation.ts';
+  import { doneTask, editSubmitTask, editTask, removeTask  } from '../composables/todos.ts';
 </script>
 
 <template>
@@ -88,49 +23,47 @@
           <input @click="validationForm" class="add-btn" type="submit" value="добавить">
         </form>
       </div>
-    <div class="todo__output">
-      <h2 class="title-2">Мои дела</h2>
-      <article class="todo__output-content">
-        <ul class="list">
-          <li :class="todo.class" v-for="(todo, index) in todos" :key="todo.id">
-            <div class="list__item-content">
-              <h3 v-if="!todo.isEdit">{{ todo.title }}</h3>
-              <p v-if="!todo.isEdit">{{ todo.desc }}</p>
-              <div v-if="todo.isEdit" class="inputs-wrapper">
-                <input class="todo__input" v-model="todo.title" type="text" placeholder="отредактируйте заголовок">
-                <input class="todo__input" v-model="todo.desc" type="text" placeholder="отредактируйте описание">
-                <button @click="editSubmitTask(index)" class="add-btn">ок</button>
+      <div class="todo__output">
+        <h2 class="title-2">Мои дела</h2>
+        <article class="todo__output-content">
+          <ul class="list">
+            <li :class="todo.class" v-for="(todo, index) in todos" :key="todo.id">
+              <div class="list__item-content">
+                <h3 v-if="!todo.isEdit">{{ todo.title }}</h3>
+                <p v-if="!todo.isEdit">{{ todo.desc }}</p>
+                <div v-if="todo.isEdit" class="inputs-wrapper">
+                  <input class="todo__input" v-model="todo.title" type="text" placeholder="отредактируйте заголовок">
+                  <input class="todo__input" v-model="todo.desc" type="text" placeholder="отредактируйте описание">
+                  <button @click="editSubmitTask(index)" class="add-btn">ок</button>
+                </div>
               </div>
-            </div>
-            <div v-if="!todo.isEdit" class="btn-wrapper">
-              <button @click="doneTask(index)" class="done-btn btn" >
-                <img class="done-icon" src="/done.jpg" alt="done">
-              </button>
-              <button @click="editTask(index)" class="edit-btn btn">
-                <img class="edit-icon" src="/edit.png" alt="edit">
-              </button>
-              <button @click="removeTask(index)" class="delete-btn btn">x</button>
-            </div>
-          </li>
-        </ul>
-        <img v-if="stubs.imgVisible || todos.length == 0" class="stub-img" src="/cat.jpg" alt="cat">
-      </article>
+              <div v-if="!todo.isEdit" class="btn-wrapper">
+                <button @click="doneTask(index)" class="done-btn btn" >
+                  <img class="done-icon" src="/done.jpg" alt="done">
+                </button>
+                <button @click="editTask(index)" class="edit-btn btn">
+                  <img class="edit-icon" src="/edit.png" alt="edit">
+                </button>
+                <button @click="removeTask(index)" class="delete-btn btn">x</button>
+              </div>
+            </li>
+          </ul>
+          <img v-if="stubs.imgVisible || todos.length == 0" class="stub-img" src="/cat.jpg" alt="cat">
+        </article>
 
-      <div class="done__tasks">
-        <h2 class="title-2">выполненные дела</h2>
-        <ul class="list">
-          <li v-for="todo in todos.filter((t:any) => t.done)"  class="list__item"  :key="todo.id">
-            <p> {{ todo.title }}</p>
-            <p> {{ todo.desc }}</p>  
-          </li>
-        </ul>
-        <p v-show="todos.length == 0 || todos.filter((t:any) => t.done).length == 0">нет выполненных дел(</p>
-      </div> 
+        <div class="done__tasks">
+          <h2 class="title-2">выполненные дела</h2>
+          <ul class="list">
+            <li v-for="todo in todos.filter((t:any) => t.done)"  class="list__item"  :key="todo.id">
+              <p> {{ todo.title }}</p>
+              <p> {{ todo.desc }}</p>  
+            </li>
+          </ul>
+          <p v-show="todos.length == 0 || todos.filter((t:any) => t.done).length == 0">нет выполненных дел(</p>
+        </div> 
+      </div>`
     </div>
   </div>
- 
-  </div>
-  
 </template>
 
 <style lang="scss" scoped>
