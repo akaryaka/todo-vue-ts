@@ -1,25 +1,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import TodoList from './TodoList/TodoList.vue';
-
-  interface Todo {
-    id: number,
-    title: string,
-    desc: string,
-    class: string,
-    isEdit: boolean,
-    done: boolean
-  }
-
-  interface Form {
-    newTitle : string,
-    newDesc: string
-  }
-
-  interface Errors {
-    errorTitleVisible: boolean,
-    errorDescVisible: boolean
-  }
+  import type { Todo, Form, Errors } from '../types/todo.ts';
 
   // Form
   const form = ref<Form>({
@@ -107,7 +89,7 @@
     <div class="todo" id="todo">
       <div class="todo__header">
         <h1 class="title">Что хотите сделать?</h1>
-        <TodoList />
+        <TodoList desc="2"/>
         <form action="#" class="todo__form">
           <label class="todo__label" for="title-task">Название дела</label>
           <input id="title-task" type="text" v-model="form.newTitle" class="todo__input" autofocus="true">
@@ -248,19 +230,6 @@
     cursor: pointer;
     &:hover {
       opacity: 0.8;
-    }
-  }
-
-  .list {
-    &__item{
-      opacity: 1;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      padding: 5px;
-      border: 1px solid #000;
-      border-radius: 10px;
     }
   }
 
