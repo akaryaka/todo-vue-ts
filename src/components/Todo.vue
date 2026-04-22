@@ -3,8 +3,8 @@
 
   interface Todo {
     id: number,
-    title: string | undefined,
-    desc: string | undefined,
+    title: string,
+    desc: string,
     class: string,
     isEdit: boolean,
     done: boolean
@@ -36,7 +36,7 @@
         stubVisible: false
       })
 
-      const todos = ref<Todo[]>([]);
+      const todos: any = ref<any>([]);
 
       function addTask(event: MouseEvent) {
         event.preventDefault();
@@ -66,10 +66,10 @@
         } else {
           errors.value.errorDescVisible = false;
           errors.value.errorTitleVisible = false;
-          addTask(event)
-          checkListNull();
-          checkListDoneNull();
+          addTask(event);
         }
+        checkListNull();
+        checkListDoneNull();
       }
 
       function doneTask(index: any) {
@@ -106,14 +106,7 @@
         if (todos.value.length == 0) {
           stubs.value.stubVisible = true;
           return;
-        }
-        for (let i=0; i<todos.value.length; i++) {
-          if (todos.value[i].class == 'list__item done') {
-            stubs.value.stubVisible = false;
-          } else {
-            stubs.value.stubVisible = true;
-          }
-        }
+        } 
       }
 
       return { addTask, validationForm, doneTask, editTask, removeTask, editSubmitTask, checkListNull, checkListDoneNull, form, todos, errors, stubs }
@@ -167,12 +160,12 @@
       <div class="done__tasks">
         <h2 class="title-2">выполненные дела</h2>
         <ul class="list">
-          <li  v-for="todo in todos.filter(t => t.done)"  class="list__item"  :key="todo.id">
+          <li v-for="todo in todos.filter((t:any) => t.done)"  class="list__item"  :key="todo.id">
             <p> {{ todo.title }}</p>
             <p> {{ todo.desc }}</p>  
           </li>
         </ul>
-        <p v-show="todos.length == 0 || stubs.stubVisible">нет выполненных дел(</p>
+        <p v-show="todos.length == 0 || todos.filter((t:any) => t.done).length == 0">нет выполненных дел(</p>
       </div> 
     </div>
   </div>
@@ -226,7 +219,7 @@
     }
   }
 
-    .todo {
+  .todo {
     &__form {
     width: 60%;
     display: flex;
@@ -263,6 +256,7 @@
     font-size: 25px;
     cursor: pointer;
   }
+
   .list {
     &__item{
       opacity: 1;
