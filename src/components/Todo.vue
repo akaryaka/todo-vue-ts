@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-  import TodoList from './TodoList/TodoList.vue';
-  import { form, errors, stubs, todos } from '../constants/index.ts';
-  import { validationForm } from '../composables/validation.ts';
+  import { stubs, todos } from '../constants/index.ts';
   import { doneTask, editSubmitTask, editTask, removeTask  } from '../composables/todos.ts';
+  import TodoForm from './todo/TodoForm.vue';
 </script>
 
 <template>
@@ -10,18 +9,7 @@
     <div class="todo" id="todo">
       <div class="todo__header">
         <h1 class="title">Что хотите сделать?</h1>
-        <TodoList desc="2"/>
-        <form action="#" class="todo__form">
-          <label class="todo__label" for="title-task">Название дела</label>
-          <!-- <Input placeholder="hello"/> -->
-          <input id="title-task" type="text" v-model="form.newTitle" class="todo__input" autofocus="true">
-          <div v-if="errors.errorTitleVisible" class="error">Введите название дела!</div>
-          <label class="todo__label" for="desk-task">Описание дела</label>
-          <!-- <Input placeholder="hello"/> -->
-          <input id="desk-task" v-model="form.newDesc" type="text" class="todo__input">
-          <div v-if="errors.errorDescVisible" class="error">Введите описание дела!</div>
-          <input @click="validationForm" class="add-btn" type="submit" value="добавить">
-        </form>
+        <TodoForm />
       </div>
       <div class="todo__output">
         <h2 class="title-2">Мои дела</h2>
@@ -61,7 +49,7 @@
           </ul>
           <p v-show="todos.length == 0 || todos.filter((t:any) => t.done).length == 0">нет выполненных дел(</p>
         </div> 
-      </div>`
+      </div>
     </div>
   </div>
 </template>
@@ -113,44 +101,12 @@
     }
   }
 
-  .todo {
-    &__form {
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    }
-    &__label {
-      font-size: 22px;
-      margin-bottom: 5px;
-    }
-  }
-
-  .error {
-    color: red;
-    margin-bottom: 5px;
-  }
-
-  .add-btn {
-    background-color: #000;
-    color: #fff;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 25px;
-    cursor: pointer;
-    &:hover {
-      opacity: 0.8;
-    }
-  }
-
   .btn-wrapper {
     display: flex;
     align-items: center;
   }
 
-  .edit{
+  .edit {
     &-btn {
       background-color: #fff;
       border: 1px solid rgb(97, 97, 76);

@@ -5,4 +5,4 @@ debug
 - computed(почитать)
 
 узнал:
-- ref, Composition api 
+- ref, Composition api, emits 
