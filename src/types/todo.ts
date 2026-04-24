@@ -8,7 +8,7 @@ export interface Todo {
 }
 
 export interface Form {
-  newTitle : string,
+  newTitle: string,
   newDesc: string
 }
 

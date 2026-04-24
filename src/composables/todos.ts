@@ -31,8 +31,7 @@ export function checkListNull() {
   }
 }
 
-export function addTask(event: MouseEvent) {
-  event.preventDefault();
+export function addTask() {
   const newTask:Todo = {
     id: Date.now(),
     title: form.value.newTitle,
@@ -42,6 +41,7 @@ export function addTask(event: MouseEvent) {
     done: false
   }
   todos.value.push(newTask);
+  
   form.value.newTitle = '';
   form.value.newDesc = '';
 }

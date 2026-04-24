@@ -1,9 +1,9 @@
 <template>
-  <input @click="$emit('open')" type="submit" :value="value" class="add-btn">
+  <input @click="$emit('add')" type="submit" :value="value" class="add-btn">
 </template>
 
 <script lang="ts" setup>
-  const emit = defineEmits(['open']);
+  const emit = defineEmits(['add']);
   defineProps({
     value: String
   })

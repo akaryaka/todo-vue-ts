@@ -1,10 +1,10 @@
 <template>
-  <form action="#" class="todo__form">
-    <Input label="Название дела"/>
+  <form @submit.prevent action="#" class="todo__form">
+    <Input v-model="form.newTitle" label="Название дела"/>
     <div v-if="errors.errorTitleVisible" class="error">Введите название дела!</div>
-    <Input label="Описание дела"/>
+    <Input v-model="form.newDesc" label="Описание дела"/>
     <div v-if="errors.errorDescVisible" class="error">Введите описание дела!</div>
-    <Button @open="validationForm" value="добавить" />
+    <Button @add="validationForm" value="добавить" />
   </form>
 </template>
 
@@ -12,7 +12,7 @@
   import Button from '../ui/Button.vue';
   import Input from '../ui/Input.vue';
   import { validationForm } from '../../composables/validation';
-  import { errors } from '../../constants';
+  import { errors, form } from '../../constants';
 </script>
 
 <style lang="scss" scoped>

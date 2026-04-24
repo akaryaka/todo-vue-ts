@@ -1,13 +1,16 @@
 <template>
   <label class="todo__label" :for="name">{{ label }}</label>
-  <input :id="name" class="todo__input" type="text" :placeholder="placeholder">
+  <input :value="modelValue" :id="name" @input="$emit('update:modelValue',($event.target as HTMLInputElement)?.value)" class="todo__input" type="text" :placeholder="placeholder">
 </template>
 
 <script lang="ts" setup>
+  defineEmits(['update:modelValue'])
+  
   defineProps({
     placeholder: String,
     label: String,
     name: String,
+    modelValue: String
   })
 
 </script>

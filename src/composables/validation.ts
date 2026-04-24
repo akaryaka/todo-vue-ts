@@ -1,7 +1,7 @@
 import { form, errors } from "../constants";
 import { checkListNull, addTask } from "./todos";
 
-export function validationForm(event: MouseEvent) {
+export function validationForm() {
   if (form.value.newDesc == '' && form.value.newTitle == ''){
     errors.value.errorDescVisible = true;
     errors.value.errorTitleVisible = true;
@@ -14,7 +14,7 @@ export function validationForm(event: MouseEvent) {
   } else {
     errors.value.errorDescVisible = false;
     errors.value.errorTitleVisible = false;
-    addTask(event);
+    addTask();
   }
   checkListNull();
 }
