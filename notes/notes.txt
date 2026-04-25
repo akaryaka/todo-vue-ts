@@ -1,7 +1,9 @@
-debug
-
-улучшения:
-- computed(почитать)
+сделать
+- localstorage(бд?)
+- таймер, спа?
 
 узнал:
-- ref, Composition api, emits 
+- ref, Composition api, emits,
+- trim:) удаляет пробелы сначала и с конца
+- Composition API- vue 3
+- Необходимо соблюдать принцип единой ответственности(SRP)

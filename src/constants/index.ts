@@ -1,11 +1,11 @@
 import { ref } from "vue";
-import type { Form, Errors } from "../types/todo";
+import type { Form, Errors, Todo } from "../types/todo";
 
 export const form = ref<Form>({
   newTitle: '',
   newDesc: ''
 })
-  
+
 export const errors = ref<Errors>({
   errorTitleVisible: false,
   errorDescVisible: false

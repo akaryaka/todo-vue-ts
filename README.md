@@ -1,31 +1,24 @@
-Composition API
-
-- vue 3
-
-Необходимо соблюдать принцип единой ответственности(SRP)
-
 Структура проекта
 
 src
 
 - components/
 - - todo/
-- - - TodoForm.vue
-- - - TodoList.vue
-- - - TodoItem.vue
-- - - CompletedList.vue
-- - - EmptyState.vue
+- - - TodoForm.vue(ref: errors?)
+- - - TodoList.vue(ref: btn, input)
+- - - TodoListDone.vue(+)
 - - ui/
-- - - Input.vue
-- - - Button.vue
+- - - Input.vue(+)
+- - - Button.vue(+)
 - - - Error.vue
+- - Todo.vue
 - composables/
 - - todos.ts( + )
-- - validation.ts( + )
+- - validation.ts( +, ref )
 - types/
 - - todos.ts( + )
 - constants/
-- - index.ts( + )
+- - index.ts( + , разобраться с тип ref todos )
 - App.vue
 
 ---
@@ -36,4 +29,3 @@ src
 - TodoList.vue - контейнер списка задач
 - TodoItem.vue - отдельная задача
 - CompletedList.vue - список выполненных задач
-- EmptyState.vue - заглушка, когда задач нет
