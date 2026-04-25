@@ -14,3 +14,18 @@
 <script lang="ts" setup>
     import { todos } from '../../constants';
 </script>
+
+<style lang="scss" scoped>
+  .list {
+    &__item{
+      opacity: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 5px;
+      border: 1px solid #000;
+      border-radius: 10px;
+    }
+  }
+</style>

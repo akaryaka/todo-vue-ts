@@ -29,6 +29,19 @@
 </script>
 
 <style lang="scss" scoped>
+  .add-btn {
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 25px;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  
   .list {
     &__item{
       opacity: 1;
@@ -104,5 +117,17 @@
       width: 90%;
     }
   } 
+
+  .todo {
+    &__input {
+      padding: 5px;
+      outline: none;
+      border: 1px solid #000;
+      font-size: 25px;
+      width: 90%;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+  }
 
 </style>
