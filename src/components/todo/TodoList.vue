@@ -25,7 +25,9 @@
 
 <script setup>
   import { todos } from '../../constants';
-  import { doneTask, editTask, editSubmitTask, removeTask } from '../../composables/todos';
+  import { composableTodos } from '../../composables/todos';
+  
+  const { doneTask, editTask, editSubmitTask, removeTask } = composableTodos();
 </script>
 
 <style lang="scss" scoped>

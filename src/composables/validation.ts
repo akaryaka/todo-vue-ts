@@ -1,5 +1,9 @@
 import { form, errors } from "../constants";
-import { checkListNull, addTask } from "./todos";
+import { composableTodos } from "./todos";
+// import { checkListNull } from "./todos";
+// import { checkListNull, addTask } from "./todos";
+
+const { addTask, checkListNull } = composableTodos()
 
 export function validationForm() {
   if (form.value.newDesc.trim() == '' && form.value.newTitle.trim() == '') {
