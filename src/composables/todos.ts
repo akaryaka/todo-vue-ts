@@ -24,7 +24,6 @@ export function composableTodos() {
     checkListNull();
   }
 
-
   function checkListNull() {
     if (todos.value.length == 0) {
       stubs.value.imgVisible = true;
@@ -32,23 +31,23 @@ export function composableTodos() {
     } else {
       stubs.value.imgVisible = false;
       stubs.value.stubVisible = false;
-    }  
-  } 
-
- function addTask() {
-  const newTask: Todo = {
-    id: Date.now(),
-    title: form.value.newTitle,
-    desc: form.value.newDesc,
-    class: 'list__item',
-    isEdit: false,
-    done: false
+    }
   }
-  todos.value.push(newTask);
-  
-  form.value.newTitle = '';
-  form.value.newDesc = '';
-}
+
+  function addTask() {
+    const newTask: Todo = {
+      id: Date.now(),
+      title: form.value.newTitle,
+      desc: form.value.newDesc,
+      class: 'list__item',
+      isEdit: false,
+      done: false
+    }
+    todos.value.push(newTask);
+
+    form.value.newTitle = '';
+    form.value.newDesc = '';
+  }
 
   try {
     const todoStor = localStorage.getItem('Task List')
@@ -61,7 +60,7 @@ export function composableTodos() {
   }
 
   watch(
-    todos ,
+    todos,
     (updateTodos) => {
       try {
         localStorage.setItem('Task List', JSON.stringify(updateTodos))
@@ -72,7 +71,7 @@ export function composableTodos() {
     { deep: true }
   )
 
-  return {addTask, doneTask, editTask, removeTask, editSubmitTask, checkListNull}
+  return { addTask, doneTask, editTask, removeTask, editSubmitTask, checkListNull }
 }
 
 

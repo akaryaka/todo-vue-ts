@@ -16,7 +16,7 @@ src
 - - todos.ts( + )
 - - validation.ts( +, ref )
 - types/
-- - todos.ts( + )
+- - todos.ts
 - constants/
 - - index.ts( + , разобраться с тип ref todos )
 - App.vue

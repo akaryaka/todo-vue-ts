@@ -1,3 +1,6 @@
+ref:
+- убрать изменение переменных напрямую; делать через watch(provide/inject)
+
 узнал:
 - как использовать watch, localStorage, антипаттерны
 - ref, Composition api, emits,
