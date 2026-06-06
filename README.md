@@ -29,3 +29,7 @@ src
 - TodoList.vue - контейнер списка задач
 - TodoItem.vue - отдельная задача
 - CompletedList.vue - список выполненных задач
+
+---
+
+использовал генератор фавиконок - https://realfavicongenerator.net/your-favicon-is-ready
