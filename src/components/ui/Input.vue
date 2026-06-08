@@ -25,6 +25,9 @@
       width: 90%;
       margin-bottom: 10px;
       border-radius: 5px;
+      @media(max-width: 1620px) {
+        width: 100%;
+      }
     }
     &__label {
       font-size: 22px;
