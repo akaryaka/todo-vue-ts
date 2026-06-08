@@ -1,1 +1,1 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/todo-vue-ts/sw.js', { scope: '/todo-vue-ts/' })})}
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/todo-vue-ts/site.webmanifest', { scope: '/todo-vue-ts/' })})}
