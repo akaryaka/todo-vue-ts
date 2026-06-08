@@ -11,9 +11,10 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',   
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'favicon.svg'],
+      filename: 'site.webmanifest',
       manifest: {
-        name: 'Todo',
-        short_name: 'Todo',
+        name: 'todo-vue-ts',
+        short_name: 'todo-vue-ts',
         description: 'Todo desc',
         theme_color: '#ffffff',
         background_color: '#ffffff',
@@ -22,17 +23,17 @@ export default defineConfig({
         scope: `/${REPO_NAME}/`,
         icons: [
           {
-            src: '/${REPO_NAME}//web-app-manifest-192x192.png',
+            src: `/${REPO_NAME}//web-app-manifest-192x192.png`,
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/${REPO_NAME}//web-app-manifest-512x512.png',
+            src: `/${REPO_NAME}//web-app-manifest-512x512.png`,
             sizes: '512x512',
             type: 'image/png'
           },
           {
-            src: '/${REPO_NAME}//web-app-manifest-512x512.png',
+            src: `/${REPO_NAME}//web-app-manifest-512x512.png`,
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable' // Важно для адаптивных иконок на Android
