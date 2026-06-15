@@ -35,8 +35,8 @@
       padding-top: 300px;
     }
     @media(max-width: 575px) {
-      width: 500px;
-      padding-top: 100px;
+      width: 100%;
+      padding: 100px 20px;
     }
   }
 
@@ -46,6 +46,9 @@
     font-size: 30px;
     line-height: 120%;
     text-align: center;
+    @media(max-width: 575px) {
+      font-size: 25px;
+    }
   }
 
   .todo {
@@ -73,12 +76,12 @@
         width: 600px;
       }
       @media(max-width: 991px) {
-        // padding-top: 300px;
         margin-right: 0;
         margin-bottom: 100px;
       }
       @media(max-width: 575px) {
         width: 100%;
+        margin-bottom: 40px;
       }
     }
     &__output {
