@@ -21,6 +21,8 @@ app.get("/", function (req, res) {
   `);
 });
 
-app.listen(port);
+app.use(function (req, res) {
+  res.status(404).send("not found");
+});
 
-app.locals.appTitle = process.env.APPTITLE;
+app.listen(port);
